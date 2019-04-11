@@ -1,0 +1,107 @@
+\documentclass[12pt,a4paper,twoside,openany,parskip=full,parindent=full]{book}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{graphicx}
+\usepackage{times}
+\usepackage{indentfirst}
+\usepackage[left=3cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{natbib}
+\usepackage{color}
+\usepackage{tikz}
+\usepackage{url}
+\usepackage{dirtree}
+\edef\restoreparindent{\parindent=\the\parindent\relax}
+\usepackage{parskip}
+\restoreparindent
+
+\frenchspacing
+\linespread{1.5}
+\addto\captionspolish{%
+\renewcommand*\listtablename{Spis tabel}
+\renewcommand*\tablename{Tabela}
+}
+
+\frenchspacing
+
+\begin{document}
+
+\begin{center}
+
+\vspace{1cm}
+
+Studium licencjackie
+\end{center}
+
+\vspace{1cm}
+
+\noindent Kierunek: Informatyka
+
+\noindent Specjalność: Bazy danych i technologie internetowe
+
+\vspace{1cm}
+
+{
+\leftskip=10cm\noindent
+Michał Polakowski\newline
+Nr albumu: 203446
+
+}
+
+\vspace{2cm}
+
+\title{Scraping w praktycznych aplikacjach webowych}
+\makeatletter
+
+\begin{center}
+\LARGE\bf
+\@title
+\end{center}
+
+\vspace{2cm}
+
+{
+\leftskip=10cm\noindent
+Praca licencjacka\newline 
+napisana w~Instytucie Matematyki, Fizyki i Informatyki\newline
+pod kierunkiem naukowym\newline
+dra Włodzimierza Bzyla
+
+}
+
+\vfill
+
+\begin{center}
+Gdańsk, \the\year
+\end{center}
+\thispagestyle{empty}
+
+\clearpage
+\thispagestyle{empty}
+\clearpage
+
+\tableofcontents
+
+\clearpage
+
+
+\chapter{Wprowadzenie}
+
+Celem niniejszej pracy jest \ldots
+
+\input{django.tex}
+
+\chapter{Podsumowanie}
+
+
+
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliografia}
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0pt}
+\end{thebibliography}
+
+\clearpage
+
+
+\end{document}
