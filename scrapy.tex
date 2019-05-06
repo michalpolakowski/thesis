@@ -67,4 +67,15 @@ function main(splash, args)
 
 Wysyłanie requestów do stron również odbywa się za pomocą metody z biblioteki Splash - \emph{SplashRequest}, która jako argumenty przyjmuje adres strony, metodę do której ma przejść w następnym kroku oraz argumenty (przekazanie całej funkcji z języka Lua jako parametr).
 \end{itemize}
+\section{Dlaczego Scrapy}
+Scrapy jest stosunkowo dużym frameworkiem skupionym na webscrapingu. Nie jest trudno opanować podstawy - framework ten jest bardzo dobrze udokumentowany oraz posiada dużo poradników dotyczących pierwszych kroków. Wszystkie te udogonienia pozwalają poznać podstawowe fundamenty Scrapy, które w dużej mierze powinny wystarczyć do większości zadań związanych z webscrapingiem. Posiada własne selektory, dzięki którym można swobodnie poruszać się po stukturze HTML. Jego największą zaletą jest to, że służy jako crawler - wystarczy podać adres początkowy, a framework będzie w stanie przeszukiwać wszystko, co tylko użytkownik potrzebuje. Przy wielkości opisywanego przez nas projektu oraz przy daleko idących planach rozbudowy aplikacji, pisanie crawlera we frameworku w pełni skupionym na scrapingu jest niezbędne do uniknięcia dalszych problemów związanych z obsługą coraz bardziej skomplikowanych stron internetowych.
+\subsection{Selektory}
+Scrapy implementuje własne selektory pozwalające przeszukiwanie kodu HTML.
+Można wydobywać części kodu za pomocą języka XPath oraz poprzez wybieranie kodu CSS, który stylizuje HTML.
+W opisywanej aplikacji zdecydowałem się na posługiwanie się językiem XPath - był dla mnie wygodniejszy i łatwiejszy w nauce.
+Przykładowy selektor z napisanego przeze mnie scrapera:
+\begin{lstlisting}
+response.xpath("//a[./img[contains(@src,.)]]/@href").extract()
+\end{lstlisting}
+Powyższa linijka oznacza wybranie wszystkich znaczników \textless a\textgreater, następnie w tym znaczniku wybranie takich znaczników \textless img\textgreater, które posiadają w sobie odnośniki do innych stron. \emph{Extract()} powoduje, że wszystkie wyniki wyszukiwania pojedynczo będą formatowane jako typ string, który będzie można przekształcić wedle uznania.
 \end{document}
