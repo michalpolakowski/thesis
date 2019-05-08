@@ -77,5 +77,17 @@ Przykładowy selektor z napisanego przeze mnie scrapera:
 \begin{lstlisting}
 response.xpath("//a[./img[contains(@src,.)]]/@href").extract()
 \end{lstlisting}
-Powyższa linijka oznacza wybranie wszystkich znaczników \textless a\textgreater, następnie w tym znaczniku wybranie takich znaczników \textless img\textgreater, które posiadają w sobie odnośniki do innych stron. \emph{Extract()} powoduje, że wszystkie wyniki wyszukiwania pojedynczo będą formatowane jako typ string, który będzie można przekształcić wedle uznania.
+Powyższa linijka oznacza wybranie wszystkich znaczników \textless a\textgreater, następnie w tym znaczniku wybranie takich znaczników \textless img\textgreater, które posiadają w sobie odnośniki do innych stron. 
+\emph{Extract()} powoduje, że wszystkie wyniki wyszukiwania pojedynczo będą formatowane jako typ string, który będzie można przekształcić wedle uznania.
+Ważnym elementem selektorów jest możliwość wyszukania danej informacji, która znajduję się "w środku" wybranych znaczników.
+Za przykład posłuży mi fragment kodu, który ma za zadanie zebrać wszystkie niezbędne informacje na temat strony \emph{zalando.pl}:
+\begin{lstlisting}
+        for item in response.xpath("//div[./a[contains(@href,'zalando.pl')]]"):
+            url = item.xpath('./a/@href').extract()
+            itemImg = item.xpath('.//*/img[contains(@src,.)]/@src').extract()
+            price = item.xpath(".//span[contains(text(),'zl')]/text()").extract_first()
+            itemName = item.xpath('.//*/img[contains(@src,.)]/@alt').extract()
+\end{lstlisting}
+
+Jeśli xpath zaczyna się od kropki, oznacza to, że przeszukiwanie ma zostać odbyte od - podanego w przykładzie wyżej, \textless a\textgreater, które posiada odnośnik do strony zawierającej podstring 'zalando.pl'.
 \end{document}
