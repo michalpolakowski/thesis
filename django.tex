@@ -1,6 +1,54 @@
 \chapter{Django}
 
-Python jest aktualnie jednym z najpopularnijeszych języków programowania na świecie
+Python jest aktualnie jednym z najpopularnijeszych języków programowania na świecie, a co za tym idzie liczba frameworków, które się na nim opierają jest dość pokaźna. Nasz wybór w kwestii obsługi backendu aplikacji padł na Django z kilku powodów, które chciałbym w tym rozdziale pokrótce przedstawić. 
 
 \section{Popularność}
-Pierwszym czynnikiem wpływającym na nasz wybór była popularność frameworka. 
+Pierwszym czynnikiem wpływającym na nasz wybór była popularność frameworka. Django bez wątpienia jest jednym z najczęściej używanych pythonowych narzędzi do obsługi serwerowej strony aplikacji internetowych. Oprócz popularności wśród pythonowych frameworków jest on niewątpliwie również jednym z njaczęściej wybieranych w ogóle. Na jego popularność z pewnością wpływa podejście "batteries included", to znaczy koncepcja frameworka, który najważniejsze elementy współczesnych aplikacji internetowych ma niejako wbudowane. Możliwość obsługi frontendu poprzez wbudowany system template'ów, formularze tworzone bezpośrednio po stronie django i w prosty sposób renderowane na froncie, czy system autentykacji, który praktycznie nie wymaga modyfikacji (chyba, że ich potrzebujemy) - to wszystko również kierowało milionami użytkowników przy wyborze tego narzędzia do budowy ich projektów. 
+
+Z pewnością początki Django sięgające okolic 2006 roku pozwoliły na uformowanie się bardzo dużej społeczności, która sukcesywnie budowała, i wciąż buduje niezliczone ilości narzędzi wspomagających proces tworzenia i obsługi kolejnych aplikacji internetowych.
+
+\section{Modularność}
+Wymieniając w pierwszej części tego rozdziału powody popularności obiektu naszego zainteresowania, siłą rzeczy zahaczyłem również o powody, dla których Django stało się naszym wyborem jako silnik backendu budowanej przez nas aplikacji. Jednym z nich jest właśnie jego modularność - aspekt, który jest niejako bezpośrednią konsekwencją popularności. Mianowicie przez słowo modularność mam na myśli technikę budowania systemów, która kładzie nacisk na podzielenie poszczególnych funkcji programu w niezależne, wymienne moduły w taki sposób, aby dana funkcja mogła być w pełni wykonana przez dany moduł.
+
+Modularność Django można zauważyć w kilku aspektach: 
+
+\subsection{Jedna funkcjonalość, jedna aplikacja}
+Przy tworzeniu podstawowego schematu djangowej aplikacji zauważyć można, że cli frameworka tworzy strukturę folderów zbliżoną do następującej
+\dirtree{%
+.1 projectname.
+.2 projectname.
+.3 settings.py.
+.3 urls.py.
+.3 wsgi.py.
+.2 app1.
+.3 models.py.
+.3 views.py.
+.2 app2.
+.3 models.py.
+.3 views.py.
+}
+
+Pokazuję oczywiście jedynie najważniejsze z technicznego punktu widzenia pliki. Założeniem frameworka jest wyabstrahowanie każdej funkcjonalności aplikacji do oddzielnych folderów (na schemacie: app1, app2). Każdy z nich powinien zawierać oddzielne modele oraz widoki stricte odnoszące się do danej części budowanego systemu. Pozwala to na łatwe przyłączanie kolejnych, nowych elementów do gotowej aplikacji, a także tworzenie modułów wielokrotnego użytku.
+
+\subsection{Gotowe paczki}
+W związku z liczną społecznością zgromadzoną wokół Django bez większych problemów możemy znaleźć gotowe rozwiązania napotkanych problemów czy uzupełnienia frameworka o funkcjonalności, których wprowadzenia do rdzenia nie przewidzieli twórcy. Jednym z największych tego typu rozwiązań jest Django Rest Framework - narzędzie służące do budowy API w stylu architektury REST.
+
+\subsection{Bierz co chcesz}
+Przede wszystkim już w samym kodzie frameworka znaleźć możemy moduły, które możemy, choć wcale nie musimy wykorzystać. Wspomniany juz w tym rozdziale moduł autentykacji zawiera podstawowe modele użytkownika naszego systemu, formularze rejestracji i logowania, a nawet wbudowane widoki odzyskiwania hasła.Nie ma żadnego przymusu korzystania z nich, jednak mało która apliakcji webowa nie korzysta z tego typu funkcjonalności. Sprawa ulega komplikacji, gdy wbudowane funkcjonalności nie odpowiadają w pełni naszym potrzebom, jednak z Django nie stanowi to większego problemu - nadpisywanie, dopisywanie i ogólna modyfikacja gotowych elementów jest intuicyjna i szybka.
+
+\section{ORM}
+Jednym z elementów, który wyróżnia Django jest jego ORM:
+\begin{lstlisting}
+from django import models
+
+class AuthorModel(models.Model):
+	name = models.CharField('Name', max_length=50)
+
+class BookModel(models.Model):
+	title = models.CharField('Title', max_length=100)
+	author - models.ForeignKey(Author, on_delete=models.CASCADE)
+	
+\end{lstlisting}
+
+Przedstawiony fragment kodu przedstawia reprezentację schematu tabel zawierających dane na temat książek i ich autorów. Atrybuty klasy definiują kolumny i ich typy. 
+Taki sposób planowania bazy danych pozwala na niemal obrazowe przedstawianie jej przyszłej budowy, a także zwiększa czytelność zależności wystepujących między poszczególnym encjami naszej aplikacji.Obsługa wielu różnych baz danych jest wspierana dzięki paczkom przygotowanym przez społeczność. 
