@@ -1,0 +1,101 @@
+\chapter {Scraper} 
+
+W niniejszym rozdziale zajmę się omówieniem użytych w projekcie zagadnień dotyczących webscrapingu.
+
+Scrapy jest jedną z najpopularniejszych bibliotek pythonowych, które mają za zadanie zbierać informacje ze stron internetowych.
+Webscraping oparty jest na pyhtonowym frameworku \emph{Scrapy}, wspieranym przez biblioteki \emph{Splash} oraz \emph{XPath}.
+Uzyskiwałem wiedzę posługując się dokumentacjami bibliotek \emph{Scrapy}\footnote{https://doc.scrapy.org}, \emph{Splash}\footnote{https://splash.readthedocs.io/en/stable/api.html} oraz \emph{XPath}\footnote{https://doc.scrapy.org/en/xpath-tutorial/topics/xpath-tutorial.html}.
+
+Skrypt uruchamiany jest na trzech stronach sklepów internetowych: \emph{https://reserved.com, https://zalando.pl, https://domodi.pl}. 
+Wykonywanie programu jest podzielone na trzy etapy:
+\begin{enumerate}
+	\item Po uzyskaniu słów kluczowych program wprowadza w wyszukiwarce strony daną frazę wpisaną przez użytkownika.
+	\item Przekierowuje do wszystkich wyników wyszukiwania.
+	\item Zbiera oraz zwraca informację z rubryki wygenerowanej dynamicznie przez stronę, która	ma na celu poinformowanie kupującego o rzeczach zakupionych przez innych użytkowników wraz z wyszukiwanym ubraniem.
+\end{enumerate}
+\section{Opis etapów}
+
+\subsection{Etap 1}
+	Aplikacja włącza program scrapingowy za pomocą następującej komendy: \emph{scrapy crawl clothing -a tag=”fraza” -o results.json}.
+Oznacza to uruchomienie programu o nazwie \emph{clothing} z parametrem do wyszukania (tag), a rezultat będzie przechowywany do pliku \emph{results.json}.
+Po uruchomieniu, do każdej strony internetowej inicjowana jest metoda \emph{search}, która za pomocą \emph{XPath} odszukuje formularz na stronie głównej sklepu, wpisuje interesującą użytkownika nazwę ubrania i wysyła request z żądaniem wyszukania.
+
+\subsection{Etap 2}
+	Strona sklepu internetowego zwraca wyniki wyszukiwania. Program zbiera wszystkie linki do wyszukanych ubrań za pomocą \emph{XPath}, który przeszukuje w kodzie HTML odnośniki mające w adresie przekierowującym rodzaj ubrania. Następnie przechodzi do tych stron odpalając kolejną metodę, która zależnie od sklepu szuka w kodzie HTML strony innych struktur.
+
+\subsection{Etap 3}
+	Będąc na tym etapie program jest już w dokładnie jednej ofercie zakupu ubrania. Zależnie od strony, skrypt zachowuje się w inny sposób:
+\begin{itemize}
+	 \item dla stron \emph{reserved} oraz \emph{domodi} od razu następuje przeszukiwanie kodu HTML w celu znalezienia proponowanych rzeczy poprzez znalezienie odpowiedniej struktury
+		\begin{itemize} 
+			\item dla sklepu Reserved każda oferta przeszukiwania jest umieszczona w znaczniku \textless div\textgreater, a znacznik ten zaczyna się od klasy, która ma nazwę \emph{portrait}. Dla Domodi jest to każdy 	znacznik \textless li\textgreater.
+		\end{itemize}
+	\item dla sklepu Zalando wyszukiwany jest najpierw tekst \emph{zobacz więcej}. Po znalezieniu tekstu aplikacja przechodzi na tą podstronę, żeby móc wylistować wszystkie ubrania proponowane przez sklep. W przypadku, gdy tekst \emph{zobacz więcej} nie zostanie znaleziony, aplikacja nie zwróci żadnych propozycji ze strony Zalando.\end{itemize}
+Program pobiera następujące informacje z propozycji kupna:
+\begin{itemize}
+	\item adres URL
+	\item zdjęcie ubrania
+	\item cenę
+	\item nazwę ubrania
+\end{itemize}
+Informacje zapisywane są tylko wtedy, jeśli jest ich cały komplet – powoduje to uniknięcie przedostawania się do wyników niepotrzebnych danych bądź innych przypadkowo pobranych rzeczy.
+Zapisywanie odbywa się w formacie json o strukturze słownikowej:
+\begin{itemize}
+\item[] \emph{\{ClothesName: \{ "image": imageURL, "price": PRICE, "url": URL\}\}}
+\item[] \emph{ClothesName} – przechowywany w formacie string; jako wartość zawiera słownik ze szczegółami
+\item[] \emph{imageURL} – przechowywany w formacie string; zawiera adres do zdjęcia ubrania
+\item[] \emph{PRICE} – przechowywany w formacie string; zależnie od strony może być z końcówką „zł” lub „PLN”
+\item[] \emph{URL} – przechowywany w formacie string; zawiera adres do strony sklepu z daną rzeczą
+\end{itemize}
+Program na bieżąco przesyła taki słownik do pliku wynikowego, z którego dalsza część programu może na bieżąco czytać.
+
+
+Program, żeby mógł działać na dynamicznych stronach używa biblioteki Splash.
+Splash używa funkcji napisanej w języku Lua:
+\begin{lstlisting}
+function main(splash, args)
+          assert(splash:go(args.url))
+          assert(splash:wait(0.5))
+          assert(splash:set_viewport_full())
+          return {
+            html = splash:html()}
+            end
+\end{lstlisting}
+\begin{itemize}
+\item[] Splash:go(args.url) przechodzi na stronę podaną w argumencie.
+\item[] Splash:wait(0.5) – określa jak długo program czeka na załadowanie strony
+\item[] Splash:set\_viewport\_full() sprawia, że wczytywana jest cała strona HTML
+
+Wysyłanie requestów do stron również odbywa się za pomocą metody z biblioteki Splash -- \emph{SplashRequest}, która jako argumenty przyjmuje adres strony, metodę do której ma przejść w następnym kroku oraz argumenty (przekazanie całej funkcji z języka Lua jako parametr).
+\end{itemize}
+\section{Dlaczego Scrapy}
+
+Scrapy jest stosunkowo dużym frameworkiem skupionym na webscrapingu. Nie jest trudno opanować podstawy -- framework ten jest bardzo dobrze udokumentowany oraz posiada dużo poradników dotyczących pierwszych kroków. Wszystkie te udogonienia pozwalają poznać podstawowe fundamenty Scrapy, które w dużej mierze powinny wystarczyć do większości zadań związanych z webscrapingiem. Posiada własne selektory, dzięki którym można swobodnie poruszać się po stukturze HTML. Jego największą zaletą jest to, że służy jako crawler -- wystarczy podać adres początkowy, a framework będzie w stanie przeszukiwać wgłąb stronę wedle chęci osoby piszącej program.
+
+Przy wielkości opisywanego przez nas projektu oraz przy daleko idących planach rozbudowy aplikacji pisanie crawlera we frameworku w pełni skupionym na scrapingu jest niezbędne do uniknięcia dalszych problemów związanych z obsługą coraz bardziej skomplikowanych stron internetowych.
+\subsection{Selektory}
+
+Scrapy implementuje własne selektory pozwalające przeszukiwanie kodu HTML.
+Można wydobywać części kodu za pomocą języka XPath oraz poprzez wybieranie kodu CSS, który stylizuje HTML.
+
+W opisywanej aplikacji zdecydowałem się na posługiwanie się językiem XPath -- był dla mnie wygodniejszy i łatwiejszy w nauce.
+Przykładowy selektor z napisanego przeze mnie scrapera:
+\begin{lstlisting}
+response.xpath("//a[./img[contains(@src,.)]]/@href").extract()
+\end{lstlisting}
+Powyższa linijka oznacza wybranie wszystkich znaczników \textless a\textgreater. Następnym krokiem jest znalezienie takich znaczników \textless img\textgreater, które posiadają w sobie odnośniki do innych stron. 
+\emph{Extract()} powoduje, że wszystkie wyniki wyszukiwania pojedynczo będą formatowane jako typ string, który będzie można przekształcić wedle uznania.
+Ważnym elementem selektorów jest możliwość wyszukania danej informacji znajdującej się wewnątrz wybranych znaczników.
+Za przykład posłuży mi fragment kodu. Ma on za zadanie zebrać wszystkie niezbędne informacje na temat strony \emph{zalando.pl}:
+\begin{lstlisting}
+        for item in response.xpath("//div[./a[contains(@href,'zalando.pl')]]"):
+            url = item.xpath('./a/@href').extract()
+            itemImg = item.xpath('.//*/img[contains(@src,.)]/@src').extract()
+            price = item.xpath(".//span[contains(text(),'zl')]/text()").extract_first()
+            itemName = item.xpath('.//*/img[contains(@src,.)]/@alt').extract()
+\end{lstlisting}
+
+Xpath zaczynający się od kropki oznacza, że program zaczyna przeszukiwać od -- podanego w przykładzie wyżej, \textless a\textgreater. Wybierane są tylko hiperłącza posiadające odnośnik do strony zawierającej podstring "zalando.pl".
+
+Finalnie, jeśli zdajemy sobie sprawę które rzeczy Scrapy powinien szukać oraz mamy otwartą stronę z dokumentacją\footnote{https://doc.scrapy.org}, to napisanie owego crawlera od podstaw, nie znając wcześniej składni, okazuje się stosunkowo proste i przyjemne.
+\end{document}
