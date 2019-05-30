@@ -51,7 +51,7 @@ Program na bieżąco przesyła taki słownik do pliku wynikowego, z którego dal
 
 
 Program, żeby mógł działać na dynamicznych stronach używa biblioteki Splash.
-Splash używa funkcji napisanej w języku Lua:
+Splash używa funkcji napisanej w języku Lua\footnote{\url{https://splash.readthedocs.io/en/stable/scripting-tutorial.html}}:
 \begin{lstlisting}
 function main(splash, args)
           assert(splash:go(args.url))
@@ -60,7 +60,8 @@ function main(splash, args)
           return {
             html = splash:html()}
             end
-\end{lstlisting}\footnote{\url{https://splash.readthedocs.io/en/stable/scripting-tutorial.html}
+\end{lstlisting}
+
 \begin{itemize}
 \item[] Splash:go(args.url) przechodzi na stronę podaną w argumencie.
 \item[] Splash:wait(0.5) – określa jak długo program czeka na załadowanie strony
