@@ -4,7 +4,7 @@ W niniejszym rozdziale zajmę się omówieniem użytych w projekcie zagadnień d
 
 Scrapy jest jedną z najpopularniejszych bibliotek pythonowych, które mają za zadanie zbierać informacje ze stron internetowych.
 Webscraping oparty jest na pyhtonowym frameworku \emph{Scrapy}, wspieranym przez biblioteki \emph{Splash} oraz \emph{XPath}.
-Uzyskiwałem wiedzę posługując się dokumentacjami bibliotek \emph{Scrapy}\footnote{https://doc.scrapy.org}, \emph{Splash}\footnote{https://splash.readthedocs.io/en/stable/api.html} oraz \emph{XPath}\footnote{https://doc.scrapy.org/en/xpath-tutorial/topics/xpath-tutorial.html}.
+Uzyskiwałem wiedzę posługując się dokumentacjami bibliotek \emph{Scrapy}\footnote{\url{https://doc.scrapy.org}}, \emph{Splash}\footnote{\url{https://splash.readthedocs.io/en/stable/api.html}} oraz \emph{XPath}\footnote{\url{https://doc.scrapy.org/en/xpath-tutorial/topics/xpath-tutorial.html}}.
 
 Skrypt uruchamiany jest na trzech stronach sklepów internetowych: \emph{https://reserved.com, https://zalando.pl, https://domodi.pl}. 
 Wykonywanie programu jest podzielone na trzy etapy:
@@ -60,7 +60,7 @@ function main(splash, args)
           return {
             html = splash:html()}
             end
-\end{lstlisting}
+\end{lstlisting}\footnote{\url{https://splash.readthedocs.io/en/stable/scripting-tutorial.html}
 \begin{itemize}
 \item[] Splash:go(args.url) przechodzi na stronę podaną w argumencie.
 \item[] Splash:wait(0.5) – określa jak długo program czeka na załadowanie strony
@@ -79,7 +79,7 @@ Scrapy implementuje własne selektory pozwalające przeszukiwanie kodu HTML.
 Można wydobywać części kodu za pomocą języka XPath oraz poprzez wybieranie kodu CSS, który stylizuje HTML.
 
 W opisywanej aplikacji zdecydowałem się na posługiwanie się językiem XPath -- był dla mnie wygodniejszy i łatwiejszy w nauce.
-Przykładowy selektor z napisanego przeze mnie scrapera:
+Przykładowy selektor z napisanego przeze mnie scrapera, który jest używany w naszym programie:
 \begin{lstlisting}
 response.xpath("//a[./img[contains(@src,.)]]/@href").extract()
 \end{lstlisting}
@@ -95,6 +95,6 @@ Za przykład posłuży mi fragment kodu. Ma on za zadanie zebrać wszystkie nie
             itemName = item.xpath('.//*/img[contains(@src,.)]/@alt').extract()
 \end{lstlisting}
 
-Xpath zaczynający się od kropki oznacza, że program zaczyna przeszukiwać od -- podanego w przykładzie wyżej, \textless a\textgreater. Wybierane są tylko hiperłącza posiadające odnośnik do strony zawierającej podstring "zalando.pl".
+Kod ten napisałem sam, za pomocą dokumentacji Xpath oraz Scrapy. Xpath zaczynający się od kropki oznacza, że program zaczyna przeszukiwać od -- podanego w przykładzie wyżej, \textless a\textgreater. Wybierane są tylko hiperłącza posiadające odnośnik do strony zawierającej podstring "zalando.pl".
 
-Finalnie, jeśli zdajemy sobie sprawę które rzeczy Scrapy powinien szukać oraz mamy otwartą stronę z dokumentacją\footnote{https://doc.scrapy.org}, to napisanie owego crawlera od podstaw, nie znając wcześniej składni, okazuje się stosunkowo proste i przyjemne.
+Finalnie, jeśli zdajemy sobie sprawę które rzeczy Scrapy powinien szukać oraz mamy otwartą stronę z dokumentacją\footnote{\url{https://doc.scrapy.org}}, to napisanie owego crawlera od podstaw, nie znając wcześniej składni, okazuje się stosunkowo proste i przyjemne.
