@@ -71,20 +71,20 @@ Wysyłanie requestów do stron również odbywa się za pomocą metody z bibliot
 \end{itemize}
 \section{Dlaczego Scrapy}
 
-Scrapy jest stosunkowo dużym frameworkiem skupionym na webscrapingu. Nie jest trudno opanować podstawy -- framework ten jest bardzo dobrze udokumentowany oraz posiada dużo poradników dotyczących pierwszych kroków. Wszystkie te udogonienia pozwalają poznać podstawowe fundamenty Scrapy, które w dużej mierze powinny wystarczyć do większości zadań związanych z webscrapingiem. Posiada własne selektory, dzięki którym można swobodnie poruszać się po stukturze HTML. Jego największą zaletą jest to, że służy jako crawler -- wystarczy podać adres początkowy, a framework będzie w stanie przeszukiwać wgłąb stronę wedle chęci osoby piszącej program.
+Scrapy jest stosunkowo dużym frameworkiem skupionym na webscrapingu. Nie jest trudno opanować podstawy -- framework ten jest bardzo dobrze udokumentowany oraz posiada dużo poradników dotyczących pierwszych kroków. Wszystkie te udogonienia pozwalają poznać podstawowe fundamenty Scrapy, które w dużej mierze powinny wystarczyć do większości zadań związanych z webscrapingiem. Posiada własne selektory, dzięki którym można swobodnie poruszać się po stukturze HTML. Jego największą zaletą jest to, że służy jako crawler -- wystarczy podać adres początkowy, a framework będzie w stanie przeszukiwać wgłąb stronę wedle chęci osoby piszącej program\cite{Istherea56:online}\cite{Whataret55:online}.
 
 Przy wielkości opisywanego przez nas projektu oraz przy daleko idących planach rozbudowy aplikacji pisanie crawlera we frameworku w pełni skupionym na scrapingu jest niezbędne do uniknięcia dalszych problemów związanych z obsługą coraz bardziej skomplikowanych stron internetowych.
 \subsection{Selektory}
 
 Scrapy implementuje własne selektory pozwalające przeszukiwanie kodu HTML.
-Można wydobywać części kodu za pomocą języka XPath oraz poprzez wybieranie kodu CSS, który stylizuje HTML.
+Można wydobywać części kodu za pomocą języka XPath oraz poprzez wybieranie kodu CSS, który stylizuje HTML\cite{Scrapy1691:online}.
 
 W opisywanej aplikacji zdecydowałem się na posługiwanie się językiem XPath -- był dla mnie wygodniejszy i łatwiejszy w nauce.
 Przykładowy selektor z napisanego przeze mnie scrapera, który jest używany w naszym programie:
 \begin{lstlisting}
 response.xpath("//a[./img[contains(@src,.)]]/@href").extract()
 \end{lstlisting}
-Powyższa linijka oznacza wybranie wszystkich znaczników \textless a\textgreater. Następnym krokiem jest znalezienie takich znaczników \textless img\textgreater, które posiadają w sobie odnośniki do innych stron. 
+Powyższa linijka oznacza wybranie wszystkich znaczników \textless a\textgreater. Następnym krokiem jest znalezienie takich znaczników \textless img\textgreater, które posiadają w sobie odnośniki do innych stron\cite{Selector73:online}. 
 \emph{Extract()} powoduje, że wszystkie wyniki wyszukiwania pojedynczo będą formatowane jako typ string, który będzie można przekształcić wedle uznania.
 Ważnym elementem selektorów jest możliwość wyszukania danej informacji znajdującej się wewnątrz wybranych znaczników.
 Za przykład posłuży mi fragment kodu. Ma on za zadanie zebrać wszystkie niezbędne informacje na temat strony \emph{zalando.pl}:
@@ -94,7 +94,7 @@ Za przykład posłuży mi fragment kodu. Ma on za zadanie zebrać wszystkie nie
             itemImg = item.xpath('.//*/img[contains(@src,.)]/@src').extract()
             price = item.xpath(".//span[contains(text(),'zl')]/text()").extract_first()
             itemName = item.xpath('.//*/img[contains(@src,.)]/@alt').extract()
-\end{lstlisting}
+\end{lstlisting}\cite{SplashAj41:online}
 
 Kod ten napisałem sam, za pomocą dokumentacji Xpath oraz Scrapy. Xpath zaczynający się od kropki oznacza, że program zaczyna przeszukiwać od -- podanego w przykładzie wyżej, \textless a\textgreater. Wybierane są tylko hiperłącza posiadające odnośnik do strony zawierającej podstring "zalando.pl".
 

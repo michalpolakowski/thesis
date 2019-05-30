@@ -13,7 +13,7 @@ W związku z tym możemy wyszczególnić 5 głowne zadania, jakie serwer bramy w
   \item Anonimizacja użytkownika
   \item Zwiększenie wydajności
   \item Skalowalność
-\end{itemize}
+\end{itemize}\cite{nginxdoc86:online}
 
 \section{Load balancing}
 
@@ -74,7 +74,7 @@ Wymuszenie na pakiecie blokady zanim osiągnie maksymalny rozmiar
 \begin{lstlisting}
 tcp_nopush on;
 \end{lstlisting}
-\end{enumerate}
+\end{enumerate}\cite{NginxOpt2:online}
 
 \section{Skalowalność}
 Wraz ze wzrostem zainteresowania systemem, musimy przewidzieć, że w pewnym momencie obecna architektura może nie być wystarczająca, aby zapewnić stabilność i wysoką wydajność. Serwer NGINX jest zorientowany wokół jednego procesu głównego i wielu procesów potomnych zależnie od liczby rdzeni CPU i dysków twardych. W miarę potrzeby możemy zwiększyć liczbę rdzeni procesora, a przez to zwiększyć też liczbę procesów potomnych.

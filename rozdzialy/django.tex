@@ -28,7 +28,7 @@ Przy tworzeniu podstawowego schematu djangowej aplikacji zauważyć można, że 
 .3 views.py.
 }
 
-Pokazuję oczywiście jedynie najważniejsze z technicznego punktu widzenia pliki. Założeniem frameworka jest wyabstrahowanie każdej funkcjonalności aplikacji do oddzielnych folderów (na schemacie: app1, app2). Każdy z nich powinien zawierać oddzielne modele oraz widoki stricte odnoszące się do danej części budowanego systemu. Pozwala to na łatwe przyłączanie kolejnych, nowych elementów do gotowej aplikacji, a także tworzenie modułów wielokrotnego użytku.
+Pokazuję oczywiście jedynie najważniejsze z technicznego punktu widzenia pliki.\cite{Dokument39:online} Założeniem frameworka jest wyabstrahowanie każdej funkcjonalności aplikacji do oddzielnych folderów (na schemacie: app1, app2). Każdy z nich powinien zawierać oddzielne modele oraz widoki stricte odnoszące się do danej części budowanego systemu. Pozwala to na łatwe przyłączanie kolejnych, nowych elementów do gotowej aplikacji, a także tworzenie modułów wielokrotnego użytku.
 
 \subsection{Gotowe paczki}
 W związku z liczną społecznością zgromadzoną wokół Django bez większych problemów możemy znaleźć gotowe rozwiązania napotkanych problemów czy uzupełnienia frameworka o funkcjonalności, których wprowadzenia do rdzenia nie przewidzieli twórcy. Jednym z największych tego typu rozwiązań jest Django Rest Framework - narzędzie służące do budowy API w stylu architektury REST.
@@ -50,5 +50,5 @@ class BookModel(models.Model):
 	
 \end{lstlisting}
 
-Przedstawiony fragment kodu przedstawia reprezentację schematu tabel zawierających dane na temat książek i ich autorów. Atrybuty klasy definiują kolumny i ich typy. 
+Przedstawiony fragment kodu przedstawia reprezentację schematu tabel zawierających dane na temat książek i ich autorów. Atrybuty klasy definiują kolumny i ich typy.\cite{djangobestpractices} 
 Taki sposób planowania bazy danych pozwala na niemal obrazowe przedstawianie jej przyszłej budowy, a także zwiększa czytelność zależności wystepujących między poszczególnym encjami naszej aplikacji.Obsługa wielu różnych baz danych jest wspierana dzięki paczkom przygotowanym przez społeczność. 
