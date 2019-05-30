@@ -1,13 +1,4 @@
-\documentclass[12pt]{article}
-\usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage[latin1]{inputenc}
-
-\title{Moduł bramy}
-
-\begin{document}
-\maketitle
+\chapter {Moduł Bramy}
 
 Moduł bramy ma za zadanie optymalizację i dystrybucję ruchu sieciowego.
 Używa NGINX jako serwera pośredniczącego aby zapewnić możliwie najkrótszy czas
@@ -24,8 +15,7 @@ W związku z tym możemy wyszczególnić 5 głowne zadania, jakie serwer bramy w
   \item Skalowalność
 \end{itemize}
 
-\begin{enumerate}
-\item Load Balancing
+\section{Load balancing}
 
 Load balancing to technika redukowania obciążenia wynikającego z ilości zapytań jakie serwer musi obsłużyć poprzez dystrybuowanie ruchu na więcej niż jedną instancję, która jest w stanie takie zapytania obsłużyć. Nasz system musi zapewniać użytkownikowi poczucie lekkości niezależnie od ilości aktualnie nawiązanych połączeń. Aby rzeczywiście znalezienie najlepszego dla wybranej rzeczy dopasowania wiązało się z oszczędnością czasu, z perspektywy infrastruktury musimy zapewnić możliwie najkrótszy czas odpowiedzi.
 Na serwerze bramy do dystrybucji ruchu wybrany został algorytm karuzelowy - wszystkie procesy mają ten sam priorytet.
@@ -39,7 +29,8 @@ Na serwerze bramy do dystrybucji ruchu wybrany został algorytm karuzelowy - wsz
   }
 \end{lstlisting}
 
-\item{Caching}
+\section{Caching}
+
 Funkcjonalność aplikacji oraz korzyści jakie daje ona użytkownikowi opierają się między innymi na możliwości szybkiego porównania i wyciągnięcia wniosków dotyczących potencjalnego dopasowania. Możliwe jest to dzięki wyświetleniu zdjęcia znalezionego produktu. Nieżadko może się zdażyć, że propozycje dopasowań będą się powtarzać. Daje to możliwość cachowania plików statycznych, dzięki czemu kolejne rządanie HTTP po taki zasób będzie serwowane bezpośrednio z dysku twardego serwera bramy, a nie z serwera docelowego.
 Co więcej, NGINX daje udostępnia interfejs do ustawienia cachowania po stronie klienta, dzięki czemu zasoby statyczne w razie rządania HTTP będą pobierane bezpośrednio z pamięci podręcznej przeglądarki.
 
@@ -53,13 +44,13 @@ Co więcej, NGINX daje udostępnia interfejs do ustawienia cachowania po stronie
   }
 \end{lstlisting}
 
-\item{Anonimizacja}
+\section{Anonimizacja}
 Niezbędnym jest zapewnienie bezpieczeństwa użytkownika i systemu.
 Bezpieczeństo użytkownika jest rozumiane przez nas jako anonimizacja jego wyszukiwań. W przypadku korzystania z NGINX jako serwera pośredniczącego anonimizacja wynika naturalnie z architektury systemu.
 Rządania HTTP po zasoby udostępniane przez sklepy internetowe są wykonywane z adresem logicznym bramy, a nie użytkownika końcowego.
 Dzięki temu sklepy pozbawione są możliwości targetowania reklam dla użytkownika  biorąc pod uwagę jego poprzednie wizyty. Dzięki temu użytkownikowi aplikacji nie będą prezentowane reklamy powiązane z wyszukiwanym produktem - nie zapewniają one w żaden sposób, że reklamy będą dotyczyć rzeczy pasujących, a jedynie podobnych, lub nawet tych samych.
 
-\item{Zwiększenie wydajności}
+\section{Zwiększenie wydajności}
 Pośród ogromu możliwości, jakie serwer NGINX daje w kontekście optymalizacji ruchu, wybraliśmy kilka, które w najbardziej bezpośredni sposób wpływają na wydajność naszej infrastruktury:
 
 \begin{enumerate}
@@ -85,11 +76,9 @@ tcp_nopush on;
 \end{lstlisting}
 \end{enumerate}
 
-\item{Skalowalność}
+\section{Skalowalność}
 Wraz ze wzrostem zainteresowania systemem, musimy przewidzieć, że w pewnym momencie obecna architektura może nie być wystarczająca, aby zapewnić stabilność i wysoką wydajność. Serwer NGINX jest zorientowany wokół jednego procesu głównego i wielu procesów potomnych zależnie od liczby rdzeni CPU i dysków twardych. W miarę potrzeby możemy zwiększyć liczbę rdzeni procesora, a przez to zwiększyć też liczbę procesów potomnych.
 Infrastruktura jest zorientowana zarówno wokół konieczności skalowalności wertykalnej, ale również horyzontalnej. Zwiększenie liczby procesów na które dystrybuowany jest ruch w procesie load-balancingu również jest możliwe i zapewni stabilność w przypadku potrzeby skalowania.
-\end{enumerate}
 
 
-\end{document}
 

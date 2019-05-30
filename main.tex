@@ -17,6 +17,8 @@
 \usepackage{listings}
 \usepackage{enumerate}
 \usepackage{color}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -71,12 +73,16 @@ Studium licencjackie
 Michał Polakowski\newline
 Nr albumu: 203446\newline
 Karol Chmielewski\newline
-Nr albumu: 246668
+Nr albumu: 246668\newline
+Michał Pydyszewski\newline
+Nr albumu: 246631\newline
+Bartłomiej Pysiak\newline
+Nr albumu: 251191
 }
 
 \vspace{2cm}
 
-\title{Scraping w praktycznych aplikacjach webowych}
+\title{Praktyczne zastosowanie web scrapingu do tworzenia użytkowych aplikacji internetowych}
 \makeatletter
 
 \begin{center}
@@ -109,24 +115,22 @@ Gdańsk, \the\year
 \tableofcontents
 
 \clearpage
+\chapter*{Streszczenie}
+\input{rozdzialy/streszczenie.tex}
+\input{rozdzialy/wprowadzenie.tex}
+\input{rozdzialy/django.tex}
+\input{rozdzialy/gateway.tex}
+\input{rozdzialy/scrapy.tex}
+\input{rozdzialy/visual.tex}
+\input{rozdzialy/rules.tex}
+\input{rozdzialy/diagram.tex}
 
-
-\chapter{Wprowadzenie}
-
-Celem niniejszej pracy jest \ldots
-
-\input{django.tex}
-\input{scrapy.tex}
-\chapter{Podsumowanie}
 
 
 
 \clearpage
-\addcontentsline{toc}{chapter}{Bibliografia}
-\begin{thebibliography}{99}
-\setlength{\itemsep}{0pt}
-\input{biblio.bib}
-\end{thebibliography}
+\bibliography{main}
+\bibliographystyle{ieeetr}
 
 \clearpage
 
